@@ -2,21 +2,38 @@ import React, { useState } from "react";
 import Header from "../components/Header";
 
 const SearchRecords = () => {
-  // Sample data for demonstration
   const [records, setRecords] = useState([
-    { name: "John Doe", gender: "Male", dateOfDeath: "2023-12-01", age: 55 },
+    {
+      name: "John Doe",
+      gender: "Male",
+      dateOfDeath: "2023-12-01",
+      age: 55,
+      region: "Greater Accra Region",
+      town: "Accra",
+    },
     {
       name: "Jane Smith",
       gender: "Female",
       dateOfDeath: "2022-05-23",
       age: 34,
+      region: "Ashanti Region",
+      town: "Kumasi",
     },
-    { name: "Samuel King", gender: "Male", dateOfDeath: "2021-07-11", age: 78 },
+    {
+      name: "Samuel King",
+      gender: "Male",
+      dateOfDeath: "2021-07-11",
+      age: 78,
+      region: "Western Region",
+      town: "Takoradi",
+    },
     {
       name: "Emily Rose",
       gender: "Female",
       dateOfDeath: "2020-03-14",
       age: 22,
+      region: "Central Region",
+      town: "Cape Coast",
     },
   ]);
 
@@ -40,8 +57,8 @@ const SearchRecords = () => {
   };
 
   return (
-    <div className=" bg-white">
-        <Header/>
+    <div className="bg-white">
+      <Header />
       <div className="max-w-6xl mx-auto px-4 py-4">
         <h3 className="text-2xl font-semibold text-gray-700 text-center mb-8">
           Search Records
@@ -54,7 +71,7 @@ const SearchRecords = () => {
             value={searchTerm}
             onChange={handleSearch}
             placeholder="Search by name, gender, or date of death"
-            className="w-full max-w-md border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full sm:w-auto max-w-md border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
 
@@ -67,22 +84,27 @@ const SearchRecords = () => {
                 <th className="py-2 px-4 border-b">Gender</th>
                 <th className="py-2 px-4 border-b">Date of Death</th>
                 <th className="py-2 px-4 border-b">Age</th>
+                <th className="py-2 px-4 border-b">Region of Morgue</th>
+                <th className="py-2 px-4 border-b">Town</th>
               </tr>
             </thead>
+
             <tbody>
               {filteredRecords.length > 0 ? (
                 filteredRecords.map((record, index) => (
-                  <tr key={index} className="hover:bg-gray-50">
+                  <tr key={index} className="hover:bg-gray-50" onClick={()=>alert(record.name)}>
                     <td className="py-2 px-4 border-b">{record.name}</td>
                     <td className="py-2 px-4 border-b">{record.gender}</td>
                     <td className="py-2 px-4 border-b">{record.dateOfDeath}</td>
                     <td className="py-2 px-4 border-b">{record.age}</td>
+                    <td className="py-2 px-4 border-b">{record.region}</td>
+                    <td className="py-2 px-4 border-b">{record.town}</td>
                   </tr>
                 ))
               ) : (
                 <tr>
                   <td
-                    colSpan="4"
+                    colSpan="6"
                     className="py-4 px-4 text-center text-gray-500"
                   >
                     No records found.

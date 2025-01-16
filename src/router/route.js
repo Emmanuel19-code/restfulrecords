@@ -3,6 +3,7 @@ import Home from "../screens/Home";
 import RegisterDeceased from "../screens/RegisterDeceased";
 import IssueCertificate from "../screens/IssueCertificate";
 import SearchRecords from "../screens/SearchRecords";
+import Payment from "../screens/Payment";
 
 export const router = createBrowserRouter([
     {
@@ -18,5 +19,9 @@ export const router = createBrowserRouter([
     },{
         path:"/search_records",
         element:<SearchRecords/>
+    },
+    {
+        path:"/payment",
+        element:<Payment/>
     }
 ])
