@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Header from "../components/Header";
+import { ApiContext } from "../contexts/ApiContext";
 
 const RegisterDeceased = () => {
+  const { RegisterInfo } = useContext(ApiContext);
   const [formData, setFormData] = useState({
     fullName: "",
     gender: "",
@@ -12,6 +14,7 @@ const RegisterDeceased = () => {
     chiNumber: "",
     nextOfKin: "",
     nextOfKinGender: "",
+    nextOfKinAddress: "",
     relationship: "",
     email: "",
     phone: "",
@@ -45,46 +48,11 @@ const RegisterDeceased = () => {
       RelationshipToDeceased: formData.relationship,
       NextOfKinEmail: formData.email,
       NextOfKinPhone: formData.phone,
-      NextOfKinAddress: "", // Make sure you handle all required fields, this is just an example.
+      NextOfKinAddress: formData.nextOfKinAddress,
       RegistrationOffice: formData.registrationOffice,
     };
+   await RegisterInfo(transformedData);
 
-    const response = await fetch(
-      "http://localhost:5158/api/admin/controller/register_deceased",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(transformedData),
-      }
-    );
-
-    // Only call .json() once and store the result
-    const result = await response.json();
-    console.log(result);
-
-    if (response.ok) {
-      alert(result.Message || "Registration successful!");
-      // Optionally reset the form here
-      setFormData({
-        fullName: "",
-        gender: "",
-        dateOfBirth: "",
-        dateOfDeath: "",
-        address: "",
-        causeOfDeath: "",
-        chiNumber: "",
-        nextOfKin: "",
-        nextOfKinGender: "",
-        relationship: "",
-        email: "",
-        phone: "",
-        registrationOffice: "",
-      });
-    } else {
-      alert("Registration failed. Please try again.");
-    }
   };
 
   return (
@@ -272,7 +240,7 @@ const RegisterDeceased = () => {
                 required
               />
             </div>
-
+     
             <div>
               <label
                 htmlFor="nextOfKinGender"
@@ -311,6 +279,24 @@ const RegisterDeceased = () => {
                 onChange={handleChange}
                 required
               />
+            </div>
+            <div>
+              <label
+                htmlFor="address"
+                className="block text-gray-600 font-medium mb-2"
+              >
+                Address
+              </label>
+              <textarea
+                id="address"
+                name="nextOfKinAddress"
+                placeholder="Enter last known address"
+                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
+                rows="2"
+                value={formData.nextOfKinAddress}
+                onChange={handleChange}
+                required
+              ></textarea>
             </div>
 
             <div>

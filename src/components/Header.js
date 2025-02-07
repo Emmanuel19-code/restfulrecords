@@ -9,53 +9,47 @@ const Header = () => {
   });
 
   return (
-    <header className="bg-gray-100 shadow-md py-4 px-6">
+    <header className="bg-blue-50 shadow-md py-4 px-6">
       <div className="flex justify-between items-center">
         {/* Logo and Title */}
         <div className="flex items-center space-x-3">
-          <div className="bg-gray-300 rounded-full w-10 h-10 flex items-center justify-center">
-            <span className="text-gray-600 font-bold text-lg">🕊️</span>
+          <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center">
+            <span className="text-blue-600 font-bold text-2xl">🕊️</span>
           </div>
-          <h1 className="text-xl font-semibold text-gray-700">
+          <h1 className="text-2xl font-semibold text-blue-800">
             Restful Records
           </h1>
         </div>
 
         {/* Navigation Links */}
-        <nav className="hidden md:flex space-x-6">
-          <a href="/" className="text-gray-600 hover:text-gray-800">
+        <nav className="hidden md:flex space-x-8">
+          <a href="/" className="text-blue-700 hover:text-blue-900 font-medium">
             Home
           </a>
           <a
             href="/register_deceased"
-            className="text-gray-600 hover:text-gray-800"
+            className="text-blue-700 hover:text-blue-900 font-medium"
           >
             Register Deceased
           </a>
           <a
             href="/search_records"
-            className="text-gray-600 hover:text-gray-800"
+            className="text-blue-700 hover:text-blue-900 font-medium"
           >
             Search Records
           </a>
+          
           <a
-            href="/issue_certificate"
-            className="text-gray-600 hover:text-gray-800"
+            href="#support"
+            className="text-blue-700 hover:text-blue-900 font-medium"
           >
-            Issue Certificate
-          </a>
-          <a href="#support" className="text-gray-600 hover:text-gray-800">
             Support
           </a>
         </nav>
-
-        {/* Action Button <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
-          Add New Record
-        </button>*/}
       </div>
 
       {/* Date and Divider */}
-      <div className="mt-2 border-t border-gray-300 pt-2 text-sm text-gray-500">
+      <div className="mt-2 border-t border-blue-300 pt-2 text-sm text-blue-600">
         Today is {currentDate}
       </div>
     </header>

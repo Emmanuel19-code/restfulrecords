@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Header from "../components/Header";
+import { data, useParams } from "react-router-dom";
+import { ApiContext } from "../contexts/ApiContext";
 
 const IssueCertificate = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedRecord, setSelectedRecord] = useState(null);
+ 
+  const { LoadProfileData } = useContext(ApiContext);
+  const { Id } = useParams();
+  const [profile, setProfile] = useState([]);
   const [certificateDetails, setCertificateDetails] = useState({
     certificateNumber: "",
     issuedDate: "",
@@ -11,19 +15,16 @@ const IssueCertificate = () => {
     remarks: "",
   });
 
-  const handleSearch = () => {
-    // Simulate searching for a record based on search query (e.g., deceased full name)
-    // In real-world applications, this would involve an API call
-    // For now, we'll mock the selection.
-    const mockRecord = {
-      fullName: "John Doe",
-      dateOfDeath: "2024-10-10",
-      lastKnownAddress: "123 Main Street",
-      nextOfKin: "Jane Doe",
-      contactInfo: "123-456-7890",
-    };
-    setSelectedRecord(mockRecord);
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    const response = await LoadProfileData(Id);
+    setProfile(response);
+    console.log(response);
   };
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,11 +34,7 @@ const IssueCertificate = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Simulate certificate issue action (e.g., save certificate data to backend)
-    console.log("Certificate Issued:", certificateDetails);
-  };
+
 
   return (
     <div>
@@ -48,144 +45,314 @@ const IssueCertificate = () => {
             Issue Death Certificate
           </h3>
 
-          {/* Search Section */}
-          <div className="mb-6 text-center">
-            <input
-              type="text"
-              placeholder="Search by Deceased Full Name"
-              className="border border-gray-300 rounded-md px-4 py-2 w-1/2 focus:ring-blue-500 focus:border-blue-500"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button
-              onClick={handleSearch}
-              className="bg-blue-600 text-white px-6 py-2 rounded-md ml-4 hover:bg-blue-700"
-            >
-              Search
-            </button>
-          </div>
-
-          {/* Display Selected Record */}
-          {selectedRecord && (
-            <div className="mb-8 p-4 border border-gray-300 rounded-md bg-gray-50">
-              <h4 className="text-lg font-semibold text-gray-700">
-                Selected Record
-              </h4>
-              <p>
-                <strong>Name:</strong> {selectedRecord.fullName}
-              </p>
-              <p>
-                <strong>Date of Death:</strong> {selectedRecord.dateOfDeath}
-              </p>
-              <p>
-                <strong>Last Known Address:</strong>{" "}
-                {selectedRecord.lastKnownAddress}
-              </p>
-              <p>
-                <strong>Next of Kin:</strong> {selectedRecord.nextOfKin}
-              </p>
-              <p>
-                <strong>Contact Information:</strong>{" "}
-                {selectedRecord.contactInfo}
-              </p>
+          <form
+            className="bg-white p-8 shadow-lg rounded-md space-y-6"
+          >
+            <h4 className="text-lg font-medium text-gray-700 mb-4">
+              DECEASED DETAILS
+            </h4>
+            <div>
+              <label
+                htmlFor="fullName"
+                className="block text-gray-600 font-medium mb-2"
+              >
+                Full Name of Deceased
+              </label>
+              <input
+                type="text"
+                id="fullName"
+                name="fullName"
+                placeholder="Enter full name"
+                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
+                value={profile?.data?.fullName}
+                onChange={handleChange}
+                required
+              />
             </div>
-          )}
 
-          {/* Certificate Details Form */}
-          {selectedRecord && (
-            <form
-              onSubmit={handleSubmit}
-              className="bg-white p-8 shadow-lg rounded-md space-y-6"
-            >
-              {/* Certificate Number */}
-              <div>
-                <label
-                  htmlFor="certificateNumber"
-                  className="block text-gray-600 font-medium mb-2"
-                >
-                  Certificate Number
-                </label>
-                <input
-                  type="text"
-                  id="certificateNumber"
-                  name="certificateNumber"
-                  value={certificateDetails.certificateNumber}
-                  onChange={handleChange}
-                  placeholder="Enter certificate number"
-                  className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
-                  required
-                />
-              </div>
+            <div>
+              <label
+                htmlFor="gender"
+                className="block text-gray-600 font-medium mb-2"
+              >
+                Gender
+              </label>
+              <select
+                id="gender"
+                name="gender"
+                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
+                value={profile?.data?.gender}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+            <div>
+              <label
+                htmlFor="fullName"
+                className="block text-gray-600 font-medium mb-2"
+              >
+                Age
+              </label>
+              <input
+                type="text"
+                name="age"
+                placeholder="Enter full name"
+                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
+                value={profile?.data?.age}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="dateOfBirth"
+                className="block text-gray-600 font-medium mb-2"
+              >
+                Date of Birth
+              </label>
+              <input
+                type="date"
+                id="dateOfBirth"
+                name="dateOfBirth"
+                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
+                value={profile?.data?.dateOfBirth}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-              {/* Issued Date */}
-              <div>
-                <label
-                  htmlFor="issuedDate"
-                  className="block text-gray-600 font-medium mb-2"
-                >
-                  Date of Issue
-                </label>
-                <input
-                  type="date"
-                  id="issuedDate"
-                  name="issuedDate"
-                  value={certificateDetails.issuedDate}
-                  onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
-                  required
-                />
-              </div>
+            <div>
+              <label
+                htmlFor="dateOfDeath"
+                className="block text-gray-600 font-medium mb-2"
+              >
+                Date of Death
+              </label>
+              <input
+                type="date"
+                id="dateOfDeath"
+                name="dateOfDeath"
+                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
+                value={profile?.data?.dateOfDeath}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-              {/* Issued By */}
-              <div>
-                <label
-                  htmlFor="issuedBy"
-                  className="block text-gray-600 font-medium mb-2"
-                >
-                  Issued By
-                </label>
-                <input
-                  type="text"
-                  id="issuedBy"
-                  name="issuedBy"
-                  value={certificateDetails.issuedBy}
-                  onChange={handleChange}
-                  placeholder="Enter name of the person issuing the certificate"
-                  className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
-                  required
-                />
-              </div>
+            <div>
+              <label
+                htmlFor="address"
+                className="block text-gray-600 font-medium mb-2"
+              >
+                Address
+              </label>
+              <textarea
+                id="address"
+                name="address"
+                placeholder="Enter last known address"
+                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
+                rows="2"
+                value={profile?.data?.address}
+                onChange={handleChange}
+                required
+              ></textarea>
+            </div>
 
-              {/* Remarks */}
-              <div>
-                <label
-                  htmlFor="remarks"
-                  className="block text-gray-600 font-medium mb-2"
-                >
-                  Remarks (Optional)
-                </label>
-                <textarea
-                  id="remarks"
-                  name="remarks"
-                  value={certificateDetails.remarks}
-                  onChange={handleChange}
-                  placeholder="Enter any additional remarks"
-                  className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
-                  rows="3"
-                ></textarea>
-              </div>
+            <div>
+              <label
+                htmlFor="causeOfDeath"
+                className="block text-gray-600 font-medium mb-2"
+              >
+                Cause of Death
+              </label>
+              <textarea
+                id="causeOfDeath"
+                name="causeOfDeath"
+                placeholder="Enter cause of death"
+                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
+                rows="2"
+                value={profile?.data?.causeOfDeath}
+                onChange={handleChange}
+                required
+              ></textarea>
+            </div>
 
-              {/* Submit Button */}
-              <div className="text-center">
-                <button
-                  type="submit"
-                  className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700"
-                >
-                  Issue Certificate
-                </button>
-              </div>
-            </form>
-          )}
+            <div>
+              <label
+                htmlFor="chiNumber"
+                className="block text-gray-600 font-medium mb-2"
+              >
+                CHI Number
+              </label>
+              <input
+                type="text"
+                id="chiNumber"
+                name="chiNumber"
+                placeholder="Enter CHI number"
+                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
+                value={profile?.data?.chiNumber}
+                onChange={handleChange}
+              />
+            </div>
+
+            {/* Next of Kin Details */}
+            <h4 className="text-lg font-medium text-gray-700 mb-4">
+              NEXT OF KIN DETAILS
+            </h4>
+            <div>
+              <label
+                htmlFor="nextOfKin"
+                className="block text-gray-600 font-medium mb-2"
+              >
+                Name of Next of Kin
+              </label>
+              <input
+                type="text"
+                id="nextOfKin"
+                name="nextOfKin"
+                placeholder="Enter next of kin's name"
+                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
+                value={profile?.data?.nextOfKin}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="nextOfKinGender"
+                className="block text-gray-600 font-medium mb-2"
+              >
+                Gender
+              </label>
+              <select
+                id="nextOfKinGender"
+                name="nextOfKinGender"
+                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
+                value={profile?.data?.nextOfKinGender}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+
+            <div>
+              <label
+                htmlFor="relationship"
+                className="block text-gray-600 font-medium mb-2"
+              >
+                Relationship to Deceased
+              </label>
+              <input
+                type="text"
+                id="relationship"
+                name="relationship"
+                placeholder="Enter relationship to deceased"
+                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
+                value={profile?.data?.relationshipToDeceased
+                }
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="address"
+                className="block text-gray-600 font-medium mb-2"
+              >
+                Address
+              </label>
+              <textarea
+                id="address"
+                name="nextOfKinAddress"
+                placeholder="Enter last known address"
+                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
+                rows="2"
+                value={profile?.data?.nextOfKinAddress}
+                onChange={handleChange}
+                required
+              ></textarea>
+            </div>
+
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-gray-600 font-medium mb-2"
+              >
+                Email Address
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter email address"
+                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
+                value={profile?.data?.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="phone"
+                className="block text-gray-600 font-medium mb-2"
+              >
+                Phone Number
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="Enter phone number"
+                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
+                value={profile?.data?.nextOfKinPhone
+                  }
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="registrationOffice"
+                className="block text-gray-600 font-medium mb-2"
+              >
+                Registration Office
+              </label>
+              <select
+                id="registrationOffice"
+                name="registrationOffice"
+                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
+                value={profile?.data?.registrationOffice}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select office</option>
+                <option value="Edinburgh">City of Edinburgh</option>
+                <option value="EastLothian">East Lothian</option>
+                <option value="Midlothian">Midlothian</option>
+                <option value="WestLothian">West Lothian</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div className="text-center">
+              <button
+                type="submit"
+                className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700"
+              >
+                Submit Registration
+              </button>
+            </div>
+          </form>
         </div>
       </section>
     </div>

@@ -1,58 +1,24 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Header from "../components/Header";
+import { ApiContext } from "../contexts/ApiContext";
+import { useNavigate } from "react-router-dom";
 
 const SearchRecords = () => {
-  const [records, setRecords] = useState([
-    {
-      name: "John Doe",
-      gender: "Male",
-      dateOfDeath: "2023-12-01",
-      age: 55,
-      region: "Greater Accra Region",
-      town: "Accra",
-    },
-    {
-      name: "Jane Smith",
-      gender: "Female",
-      dateOfDeath: "2022-05-23",
-      age: 34,
-      region: "Ashanti Region",
-      town: "Kumasi",
-    },
-    {
-      name: "Samuel King",
-      gender: "Male",
-      dateOfDeath: "2021-07-11",
-      age: 78,
-      region: "Western Region",
-      town: "Takoradi",
-    },
-    {
-      name: "Emily Rose",
-      gender: "Female",
-      dateOfDeath: "2020-03-14",
-      age: 22,
-      region: "Central Region",
-      town: "Cape Coast",
-    },
-  ]);
-
+  const [records, setRecords] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredRecords, setFilteredRecords] = useState(records);
 
-  const handleSearch = (e) => {
-    const term = e.target.value;
-    setSearchTerm(term);
-    if (term === "") {
-      setFilteredRecords(records); // Reset if no search term
+  const { SearchForProfile } = useContext(ApiContext);
+  const navigation = useNavigate();
+  useEffect(() => {
+    fetchData(searchTerm);
+  }, [searchTerm]);
+
+  const fetchData = async (term) => {
+    if (term) {
+      const response = await SearchForProfile(term);
+      setRecords(response);
     } else {
-      const filtered = records.filter(
-        (record) =>
-          record.name.toLowerCase().includes(term.toLowerCase()) ||
-          record.gender.toLowerCase().includes(term.toLowerCase()) ||
-          record.dateOfDeath.includes(term)
-      );
-      setFilteredRecords(filtered);
+      setRecords([]);
     }
   };
 
@@ -69,7 +35,7 @@ const SearchRecords = () => {
           <input
             type="text"
             value={searchTerm}
-            onChange={handleSearch}
+            onChange={(e) => setSearchTerm(e.target.value)} // Update searchTerm on change
             placeholder="Search by name, gender, or date of death"
             className="w-full sm:w-auto max-w-md border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
           />
@@ -81,22 +47,34 @@ const SearchRecords = () => {
             <thead>
               <tr className="bg-gray-100 text-left">
                 <th className="py-2 px-4 border-b">Name</th>
-                <th className="py-2 px-4 border-b">Gender</th>
-                <th className="py-2 px-4 border-b">Date of Death</th>
                 <th className="py-2 px-4 border-b">Age</th>
+                <th className="py-2 px-4 border-b">Gender</th>
+                <th className="py-2 px-4 border-b">Date of Birth</th>
+                <th className="py-2 px-4 border-b">Date of Death</th>
                 <th className="py-2 px-4 border-b">Region of Morgue</th>
                 <th className="py-2 px-4 border-b">Town</th>
               </tr>
             </thead>
 
             <tbody>
-              {filteredRecords.length > 0 ? (
-                filteredRecords.map((record, index) => (
-                  <tr key={index} className="hover:bg-gray-50" onClick={()=>alert(record.name)}>
-                    <td className="py-2 px-4 border-b">{record.name}</td>
-                    <td className="py-2 px-4 border-b">{record.gender}</td>
-                    <td className="py-2 px-4 border-b">{record.dateOfDeath}</td>
+              {records.length > 0 ? (
+                records.map((record, index) => (
+                  <tr
+                    key={index}
+                    className="hover:bg-gray-50"
+                    onClick={()=>navigation(`/issue_certificate/${record.id}`)}
+                  >
+                    <td className="py-2 capitalize px-4 border-b">
+                      {record.fullName}
+                    </td>
                     <td className="py-2 px-4 border-b">{record.age}</td>
+                    <td className="py-2 px-4 border-b">{record.gender}</td>
+                    <td className="py-2 px-4 border-b">
+                      {record.dateOfBirth.split("T")[0]}
+                    </td>
+                    <td className="py-2 px-4 border-b">
+                      {record.dateOfDeath.split("T")[0]}
+                    </td>
                     <td className="py-2 px-4 border-b">{record.region}</td>
                     <td className="py-2 px-4 border-b">{record.town}</td>
                   </tr>

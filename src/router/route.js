@@ -14,7 +14,7 @@ export const router = createBrowserRouter([
         element:<RegisterDeceased/>
     },
     {
-        path:"/issue_certificate",
+        path:"/issue_certificate/:Id",
         element:<IssueCertificate/>
     },{
         path:"/search_records",
