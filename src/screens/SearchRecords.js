@@ -57,7 +57,7 @@ const SearchRecords = () => {
             </thead>
 
             <tbody>
-              {records.length > 0 ? (
+              {records?.length > 0 ? (
                 records.map((record, index) => (
                   <tr
                     key={index}

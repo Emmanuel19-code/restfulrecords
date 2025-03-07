@@ -45,6 +45,9 @@ const Header = () => {
           >
             Support
           </a>
+          <a href="/login" className="text-blue-700 hover:text-blue-900 font-medium">
+            Login
+          </a>
         </nav>
       </div>
 

@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import Header from "../components/Header";
-import { data, useParams } from "react-router-dom";
+import { data, useNavigate, useParams } from "react-router-dom";
 import { ApiContext } from "../contexts/ApiContext";
+import moment from "moment";
 
 const IssueCertificate = () => {
- 
   const { LoadProfileData } = useContext(ApiContext);
   const { Id } = useParams();
   const [profile, setProfile] = useState([]);
@@ -24,7 +24,6 @@ const IssueCertificate = () => {
     setProfile(response);
     console.log(response);
   };
-  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,7 +33,7 @@ const IssueCertificate = () => {
     }));
   };
 
-
+  const navigation = useNavigate();
 
   return (
     <div>
@@ -45,9 +44,7 @@ const IssueCertificate = () => {
             Issue Death Certificate
           </h3>
 
-          <form
-            className="bg-white p-8 shadow-lg rounded-md space-y-6"
-          >
+          <form className="bg-white p-8 shadow-lg rounded-md space-y-6">
             <h4 className="text-lg font-medium text-gray-700 mb-4">
               DECEASED DETAILS
             </h4>
@@ -115,11 +112,11 @@ const IssueCertificate = () => {
                 Date of Birth
               </label>
               <input
-                type="date"
+                type="text"
                 id="dateOfBirth"
                 name="dateOfBirth"
                 className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
-                value={profile?.data?.dateOfBirth}
+                value={moment(profile?.data?.dateOfBirth).format("YYYY-MM-DD")}
                 onChange={handleChange}
                 required
               />
@@ -133,11 +130,11 @@ const IssueCertificate = () => {
                 Date of Death
               </label>
               <input
-                type="date"
+                type="text"
                 id="dateOfDeath"
                 name="dateOfDeath"
                 className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
-                value={profile?.data?.dateOfDeath}
+                value={moment(profile?.data?.dateOfDeath).format("YYYY-MM-DD")}
                 onChange={handleChange}
                 required
               />
@@ -256,8 +253,7 @@ const IssueCertificate = () => {
                 name="relationship"
                 placeholder="Enter relationship to deceased"
                 className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
-                value={profile?.data?.relationshipToDeceased
-                }
+                value={profile?.data?.relationshipToDeceased}
                 onChange={handleChange}
                 required
               />
@@ -313,8 +309,7 @@ const IssueCertificate = () => {
                 name="phone"
                 placeholder="Enter phone number"
                 className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
-                value={profile?.data?.nextOfKinPhone
-                  }
+                value={profile?.data?.nextOfKinPhone}
                 onChange={handleChange}
                 required
               />
@@ -348,8 +343,9 @@ const IssueCertificate = () => {
               <button
                 type="submit"
                 className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700"
+                onClick={() => navigation("/payment")}
               >
-                Submit Registration
+                ISSUE CERTIFICATE
               </button>
             </div>
           </form>

@@ -4,6 +4,7 @@ import RegisterDeceased from "../screens/RegisterDeceased";
 import IssueCertificate from "../screens/IssueCertificate";
 import SearchRecords from "../screens/SearchRecords";
 import Payment from "../screens/Payment";
+import Login from "../screens/Login";
 
 export const router = createBrowserRouter([
     {
@@ -23,5 +24,9 @@ export const router = createBrowserRouter([
     {
         path:"/payment",
         element:<Payment/>
+    },
+    {
+        path:"/login",
+        element:<Login/>
     }
 ])
