@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import Header from "../components/Header";
 import { ApiContext } from "../contexts/ApiContext";
+import { useNavigate } from "react-router-dom";
 
 const RegisterDeceased = () => {
   const { RegisterInfo } = useContext(ApiContext);
@@ -20,7 +21,7 @@ const RegisterDeceased = () => {
     phone: "",
     registrationOffice: "",
   });
-
+  const navigate = useNavigate();
   // Handle change in form inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -363,8 +364,9 @@ const RegisterDeceased = () => {
 
             <div className="text-center">
               <button
-                type="submit"
+                
                 className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700"
+                onClick={()=>navigate("/payment")}
               >
                 Submit Registration
               </button>

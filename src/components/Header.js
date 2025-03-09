@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 
 const Header = () => {
+  const { user, logout } = useContext(AuthContext);
+
   const currentDate = new Date().toLocaleDateString("en-GB", {
     weekday: "long",
     day: "numeric",
@@ -23,31 +26,55 @@ const Header = () => {
 
         {/* Navigation Links */}
         <nav className="hidden md:flex space-x-8">
-          <a href="/" className="text-blue-700 hover:text-blue-900 font-medium">
-            Home
-          </a>
-          <a
-            href="/register_deceased"
-            className="text-blue-700 hover:text-blue-900 font-medium"
-          >
-            Register Deceased
-          </a>
-          <a
-            href="/search_records"
-            className="text-blue-700 hover:text-blue-900 font-medium"
-          >
-            Search Records
-          </a>
-          
-          <a
-            href="#support"
-            className="text-blue-700 hover:text-blue-900 font-medium"
-          >
-            Support
-          </a>
-          <a href="/login" className="text-blue-700 hover:text-blue-900 font-medium">
-            Login
-          </a>
+          {!user ? (
+            <>
+              <a
+                href="#support"
+                className="text-blue-700 hover:text-blue-900 font-medium"
+              >
+                Support
+              </a>
+              <a
+                href="/login"
+                className="text-blue-700 hover:text-blue-900 font-medium"
+              >
+                Login
+              </a>
+            </>
+          ) : (
+            <>
+              <a
+                href="/"
+                className="text-blue-700 hover:text-blue-900 font-medium"
+              >
+                Home
+              </a>
+              <a
+                href="/register_deceased"
+                className="text-blue-700 hover:text-blue-900 font-medium"
+              >
+                Register Deceased
+              </a>
+              <a
+                href="/search_records"
+                className="text-blue-700 hover:text-blue-900 font-medium"
+              >
+                Search Records
+              </a>
+              <a
+                href="#support"
+                className="text-blue-700 hover:text-blue-900 font-medium"
+              >
+                Support
+              </a>
+              <button
+                onClick={logout}
+                className="text-red-600 hover:text-red-800 font-medium"
+              >
+                Logout
+              </button>
+            </>
+          )}
         </nav>
       </div>
 

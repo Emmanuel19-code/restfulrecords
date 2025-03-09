@@ -8,7 +8,7 @@ import Login from "../screens/Login";
 
 export const router = createBrowserRouter([
     {
-        path:"/",
+        path:"/home",
         element:<Home/>
     },{
         path:"/register_deceased",
@@ -26,7 +26,7 @@ export const router = createBrowserRouter([
         element:<Payment/>
     },
     {
-        path:"/login",
+        path:"/",
         element:<Login/>
     }
 ])
